@@ -30,21 +30,21 @@ class getstock:
         except Exception as e:
             print(e)
             return 0
-        soup = BeautifulSoup(content)
+        soup = BeautifulSoup(content, features='lxml')
       #  print content
         c = soup.findAll('div', {'class':'stock_info'})
        # print c
-        name = soup.find('h1',{'class':'name'}).contents[1].contents[0].encode('utf-8')
+        name = soup.find('h1',{'class':'name'}).contents[1].contents[0]
        # print name
 
         c = soup.findAll('div', {'class':'relate_stock clearfix'})
        # print c[1]
         c1 = c[1].find('li')
-        industry_name =  c1.contents[0].string.encode('utf-8').strip()
+        industry_name =  c1.contents[0].string.strip()
         #print name
         #industry = c[1].find('li')
 
-        #industry_name = industry.contents[0].contents[0].encode('utf-8').strip()
+        #industry_name = industry.contents[0].contents[0].strip()
         print(industry_name)
         print(name)
         if name != '':
@@ -52,8 +52,8 @@ class getstock:
             #print name
             #ws.write(str(str(count).zfill(6))+'%'+str(name)+ '%'+str(industry_name) +'\n')
             ws.write(summ, 0, str(count).zfill(6))
-            ws.write(summ, 1, name.decode('utf-8'))
-            ws.write(summ, 2, industry_name.decode('utf-8'))
+            ws.write(summ, 1, name)
+            ws.write(summ, 2, industry_name)
             return 1
      
         return 0
@@ -84,50 +84,51 @@ gs = getstock()
 #目前深证最大号为002725，获取上交所创业板请修改相应最大号码
 
 summ = 2
-count = 1
-while count <=2735:
-    try:
-        ret = gs.go(count, summ)
-        if ret == 1:
-            
-            summ += 1
-            wb.save('stock.xls')
-            print('success')
-        print(count)
-        #wb.save('stockdebt.xls')
-        count1 += 1
-        count += 1
-
-    except Exception as e:
-        print(e)
-        print('fail')
-        count1 += 1
-        count += 1
-        
+# count = 1
+# while count <=2735:
+#     try:
+#         ret = gs.go(count, summ)
+#         if ret == 1:
+#
+#             summ += 1
+#             wb.save('stock.xls')
+#             print('success')
+#         print(count)
+#         #wb.save('stockdebt.xls')
+#         count1 += 1
+#         count += 1
+#
+#     except Exception as e:
+#         print(e)
+#         print('fail')
+#         count1 += 1
+#         count += 1
+#
     #break
 
-count = 300000
-while count <=300409:
-    try:
-        ret = gs.go(count, summ)
-        if ret == 1:
-            
-            summ += 1
-            wb.save('stock.xls')
-            print('success')
-        print(count)
-        #wb.save('stockdebt.xls')
-        count1 += 1
-        count += 1
-    except Exception as e:
-        print(e)
-        print('fail')
-        count1 += 1
-        count += 1
+# count = 300000
+# while count <=300409:
+#     try:
+#         ret = gs.go(count, summ)
+#         if ret == 1:
+#
+#             summ += 1
+#             wb.save('stock.xls')
+#             print('success')
+#         print(count)
+#         #wb.save('stockdebt.xls')
+#         count1 += 1
+#         count += 1
+#     except Exception as e:
+#         print(e)
+#         print('fail')
+#         count1 += 1
+#         count += 1
         
 
 count = 600000
-while count <=603998:
+#while count <=603998:
+while count <=600010:
     try:
 
         ret = gs.go(count, summ)
