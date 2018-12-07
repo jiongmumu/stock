@@ -16,32 +16,32 @@ file_names.sort()
 stock = {}
 xlabel = file_names[0]
 for fname in file_names:
-	f = open(fname, 'r')
-	print(fname)
-	summ = 0
-	stock_t = {}
-	while 1:
-		line = f.readline()
-		#print line
-		if not line:
-			break
-		array = line[:-1].split('%')
-		a = array[0].decode('utf-8')
-		#print array[2]
+    f = open(fname, 'r')
+    print(fname)
+    summ = 0
+    stock_t = {}
+    while 1:
+        line = f.readline()
+        #print line
+        if not line:
+            break
+        array = line[:-1].split('%')
+        a = array[0].decode('utf-8')
+        #print array[2]
 
-		#if stock_t.has_key(a):
-		#	stock_t[a].append(int(array[2]))
-		#else:
-		stock_t[a] = int(array[2])
-	
-		#print line
-		summ += int(array[2])
-	for key in stock_t:
-		if key in stock:
-			stock[key].append(stock_t[key]/float(summ))
-		else:
-			stock[key] = [stock_t[key]/float(summ)]		
-	#print stock[u'中信证券']
+        #if stock_t.has_key(a):
+        #    stock_t[a].append(int(array[2]))
+        #else:
+        stock_t[a] = int(array[2])
+    
+        #print line
+        summ += int(array[2])
+    for key in stock_t:
+        if key in stock:
+            stock[key].append(stock_t[key]/float(summ))
+        else:
+            stock[key] = [stock_t[key]/float(summ)]        
+    #print stock[u'中信证券']
 
 #url = 'http://quotes.money.163.com/trade/lsjysj_'+ '601800'+'.html?year=2014&season=4'
 url = 'http://quotes.money.163.com/trade/lsjysj_'+ '600030'+'.html?year=2014&season=4'
@@ -63,9 +63,9 @@ tr = table.findAll('tr')
 #print td
 web = {}
 for i in range(1, len(tr)):
-	td = tr[i].findAll('td')
+    td = tr[i].findAll('td')
 
-	web[td[0].contents[0]] = (td[4].contents[0])
+    web[td[0].contents[0]] = (td[4].contents[0])
 
 
 url = 'http://quotes.money.163.com/trade/lsjysj_'+ '600030'+'.html'
@@ -85,9 +85,9 @@ table = soup.find('table',class_='table_bg001 border_box limit_sale')
 tr = table.findAll('tr')
 
 for i in range(1, len(tr)):
-	td = tr[i].findAll('td')
+    td = tr[i].findAll('td')
 
-	web[td[0].contents[0]] = (td[4].contents[0])
+    web[td[0].contents[0]] = (td[4].contents[0])
 
 
 
@@ -96,12 +96,12 @@ print(web)
 
 y2=[]
 for fname in file_names:
-	nm = fname[5:-4]
-	nm = fname[5:-4]
-	if nm.decode('utf-8') in web:
-		y2.append(float(web[nm.decode('utf-8')]))
-	else:
-		y2.append(0)
+    nm = fname[5:-4]
+    nm = fname[5:-4]
+    if nm.decode('utf-8') in web:
+        y2.append(float(web[nm.decode('utf-8')]))
+    else:
+        y2.append(0)
 print(y2)
 fig = plt.figure()
 f = fig.add_subplot(111)
@@ -118,9 +118,9 @@ y = stock[key]
 yy1 = []
 yy2 = []
 for i in range(len(stock[key])):
-	if y[i] != 0 and y2[i] !=0:
-		yy1.append(y[i])
-		yy2.append(y2[i])
+    if y[i] != 0 and y2[i] !=0:
+        yy1.append(y[i])
+        yy2.append(y2[i])
 
 print(yy2)
 
