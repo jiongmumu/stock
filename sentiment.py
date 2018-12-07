@@ -12,7 +12,7 @@ import xlrd
 import xlwt
 from glob import glob
 
-import re,urllib2
+import re,urllib.request,urllib.error,urllib.parse
 from bs4 import BeautifulSoup
 import datetime
 from datetime import datetime
@@ -28,7 +28,7 @@ def word_feats(text, feature):
 	for w in words_t:
 		#print w
 
-		if feature.has_key(w.decode('utf-8')):
+		if w.decode('utf-8') in feature:
 			#print 1
 			words.append(w)
 
@@ -80,7 +80,7 @@ def prodict(freq):
 		seg_list = jieba.cut(text, cut_all=False)
 		for d in seg_list:
 			#print d.encode('utf-8')
-			if freq.has_key(d):
+			if d in freq:
 				freq[d] += 1
 			else:
 				freq[d] = 1
@@ -129,9 +129,9 @@ def method1():
 
 	for t in posfeats:
 		for k in t[0]:
-			print k
-		print '1'
-	print posfeats
+			print(k)
+		print('1')
+	print(posfeats)
 
 	l = os.listdir('neg')
 	#print l
@@ -145,16 +145,16 @@ def method1():
 
 	for t in negfeats:
 		for k in t[0]:
-			print k
-		print '1'
-	print negfeats
+			print(k)
+		print('1')
+	print(negfeats)
 
 	negcutoff = len(negfeats)*3/4
 	poscutoff = len(posfeats)*3/4
 	 
 	trainfeats = negfeats[:negcutoff] + posfeats[:poscutoff]
 	testfeats = negfeats[negcutoff:] + posfeats[poscutoff:]
-	print 'train on %d instances, test on %d instances' % (len(trainfeats), len(testfeats))
+	print('train on %d instances, test on %d instances' % (len(trainfeats), len(testfeats)))
 	classifier = NaiveBayesClassifier.train(trainfeats)
 	test_f = open('test.txt', 'r')
 	test = test_f.read()
@@ -163,10 +163,10 @@ def method1():
 	#tt.append((word_feats(test, feature)))
 	for t in tt:
 		#for k in t:
-		print t
+		print(t)
 	
-	print classifier.classify(word_feats(test, feature))
-	print 'accuracy:', nltk.classify.util.accuracy(classifier, testfeats)
+	print(classifier.classify(word_feats(test, feature)))
+	print('accuracy:', nltk.classify.util.accuracy(classifier, testfeats))
 	#classifier.show_most_informative_features(5)
 
 
@@ -182,7 +182,7 @@ def get_price(code, cur_date, length):
 	
 		y = today - timedelta(days = i)
 		t = datetime.strftime(y, "%Y-%m-%d")
-		print t
+		print(t)
 		d = t.split('-')
 
 		#统计日是周末
@@ -199,15 +199,15 @@ def get_price(code, cur_date, length):
 	#print date
 	#return
 	url = 'http://quotes.money.163.com/trade/lsjysj_'+ str(code)+'.html'
-	print url
+	print(url)
 	#print("股票代码:" + stock_num)
 	headers = {"User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6"}
-	req = urllib2.Request( url, headers = headers)
+	req = urllib.request.Request( url, headers = headers)
 	content = ''
 	try:
-	    content = urllib2.urlopen(req).read()
-	except Exception,e:
-	    print e
+	    content = urllib.request.urlopen(req).read()
+	except Exception as e:
+	    print(e)
 	    #return 0
 	soup = BeautifulSoup(content)
 
@@ -224,15 +224,15 @@ def get_price(code, cur_date, length):
 
 
 	url = 'http://quotes.money.163.com/trade/lsjysj_'+ str(code)+'.html?year=2014&season=4'
-	print url
+	print(url)
 	#print("股票代码:" + stock_num)
 	headers = {"User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6"}
-	req = urllib2.Request( url, headers = headers)
+	req = urllib.request.Request( url, headers = headers)
 	content = ''
 	try:
-	    content = urllib2.urlopen(req).read()
-	except Exception,e:
-	    print e
+	    content = urllib.request.urlopen(req).read()
+	except Exception as e:
+	    print(e)
 	    #return 0
 	soup = BeautifulSoup(content)
 
@@ -248,10 +248,10 @@ def get_price(code, cur_date, length):
 
 	price = []
 	for key in date:
-		if web.has_key(key):
+		if key in web:
 			price.append(float(web[key]))
 			#date[key] = float(td[4].contents[0])
-	print price
+	print(price)
 	return price
 	#print date
 
@@ -315,7 +315,7 @@ def method2():
 			date[fname[5:-4]] = -1
 
 			f = open(fname, 'r')
-			print fname
+			print(fname)
 			stock_t = {}
 			summ = 0
 			while 1:
@@ -333,7 +333,7 @@ def method2():
 				summ += int(array[2])
 
 			for key in stock_t:
-				if stock.has_key(key):
+				if key in stock:
 					stock[key].append(stock_t[key]/float(summ))
 				else:
 					stock[key] = [stock_t[key]/float(summ)]		
@@ -341,7 +341,7 @@ def method2():
 
 
 			i += 1
-		print 2
+		print(2)
 		for key in stock:
 			#if len(stock[key]) != len(file_names):
 			if len(stock[key]) != length:
@@ -354,7 +354,7 @@ def method2():
 			if len(price) != length:
 				continue
 
-			print price
+			print(price)
 			pattern = ''
 			for i in range(1, len(stock[key]) - 1):
 				if stock[key][i] < stock[key][i-1]:
@@ -374,7 +374,7 @@ def method2():
 
 					pattern += '0'
 
-			print pattern	
+			print(pattern)	
 
 			if price[length - 1] < price[length - 2]:
 				p = 1
@@ -383,12 +383,12 @@ def method2():
 			elif price[length - 1] > price[length - 2]:
 				p = 0
 
-			if pro.has_key(pattern):
+			if pattern in pro:
 				pro[pattern].append(p)
 			else:
 				pro[pattern] = [p]
 
-	print pro
+	print(pro)
 	for key in pro:
 		up = 0
 		down = 0
@@ -402,7 +402,7 @@ def method2():
 				draw += 1
 		summ = up + down + draw
 
-		print key, up*1.0 /(summ), down* 1.0/summ, draw*1.0/summ
+		print(key, up*1.0 /(summ), down* 1.0/summ, draw*1.0/summ)
 
 
 def method3():
@@ -457,7 +457,7 @@ def method3():
 			summ += int(array[2])
 
 		for key in stock_t:
-			if stock.has_key(key):
+			if key in stock:
 				stock[key].append(stock_t[key]/float(summ))
 			else:
 				stock[key] = [stock_t[key]/float(summ)]	
@@ -473,8 +473,8 @@ def method3():
 	y2 = []
 	x3 = []
 	y3 = []
-	print stock
-	print price
+	print(stock)
+	print(price)
 	for t in price:
 		if len(price[t]) == 2 and len(stock[t]) == days:
 			if price[t][1] > price[t][0]:
@@ -503,7 +503,7 @@ def method3():
 
 
 
-	print x1, y1
+	print(x1, y1)
 	f.plot(x1, y1, '*', color = 'red')
 	f.plot(x2, y2, '*', color = 'green')
 	f.plot(x3, y3, '*', color = 'blue')
@@ -553,7 +553,7 @@ def get_pattern(stock_name):
 		date[fname[5:-4]] = -1
 
 		f = open(fname, 'r')
-		print fname
+		print(fname)
 		stock_t = {}
 		summ = 0
 		while 1:
@@ -571,31 +571,31 @@ def get_pattern(stock_name):
 			summ += int(array[2])
 
 		for key in stock_t:
-			if stock.has_key(key):
+			if key in stock:
 				stock[key].append(stock_t[key]/float(summ))
 			else:
 				stock[key] = [stock_t[key]/float(summ)]		
 
 	#print stock_name.encode('utf-8')
 	#print stock
-	if stock.has_key(stock_name):
+	if stock_name in stock:
 		key = stock_name
 	#for key in stock:
 		#if len(stock[key]) != len(file_names):
 		if len(stock[key]) != length:
-			print 'data not enougth'
+			print('data not enougth')
 			return ''
 		
 		#print code[key].encode('utf-8')
 		##print stock[key]
 		#web = {}
 		price = get_price(code[key], file_names[len(file_names) -1 ][5:-4], length)
-		print price
+		print(price)
 		if len(price) != length:
-			print 'price data not enougth'
+			print('price data not enougth')
 			return ''
 
-		print price
+		print(price)
 		pattern = ''
 		for i in range(1, len(stock[key])):
 			if stock[key][i] < stock[key][i-1]:
@@ -615,7 +615,7 @@ def get_pattern(stock_name):
 
 				pattern += '0'
 
-		print pattern	
+		print(pattern)	
 		return pattern
 
 
@@ -635,20 +635,20 @@ def predict():
 	wb = xlrd.open_workbook('stock.xls')
 	sh = wb.sheet_by_name('stock')
 	code = {}
-	print pattern
+	print(pattern)
 	wrong = 0
 	right = 0
 	for rownum in range(sh.nrows):
 		if rownum < 2:
 			continue
-		print sh.cell(rownum, 1).value.encode('utf-8')
+		print(sh.cell(rownum, 1).value.encode('utf-8'))
 		p = get_pattern(sh.cell(rownum, 1).value)
-		if pattern.has_key(p):
+		if p in pattern:
 			ddd = {}
 			ddd['2015-01-13'] = -1
 			ddd['2015-01-14'] = -1
 			price = get_price(sh.cell(rownum, 0).value, '2015-01-13', length)
-			print price
+			print(price)
 			t = -1
 			if price[1] > price[0]:
 				t = 0
@@ -660,9 +660,9 @@ def predict():
 				wrong += 1
 			else:
 				right += 1
-			print '--------------------------', sh.cell(rownum, 1).value.encode('utf-8'), pattern[p], t
+			print('--------------------------', sh.cell(rownum, 1).value.encode('utf-8'), pattern[p], t)
 
-	print wrong, right, right*1.0/(wrong+right)
+	print(wrong, right, right*1.0/(wrong+right))
 		#code[sh.cell(rownum, 1).value] = sh.cell(rownum, 0).value
 
 if __name__ == "__main__":

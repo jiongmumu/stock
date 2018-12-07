@@ -6,7 +6,7 @@ import time
 import os
 import re
 
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import sys
 from bs4 import BeautifulSoup
 
@@ -44,7 +44,7 @@ def start(url, d, today, vstock):
 	    browser.get(url)
 	    t = browser.page_source
 
-	    pn = re.compile(ur'(.*)"statuses":(.*?)}]', re.S)
+	    pn = re.compile(r'(.*)"statuses":(.*?)}]', re.S)
 	    match = pn.match(t)
 	    if not match:
 	       # browser.close()
@@ -58,9 +58,9 @@ def start(url, d, today, vstock):
 	    st = int(time.mktime(datetime.strptime(datetime.strftime(today, "%Y-%m-%d"), "%Y-%m-%d").timetuple()))
 	    ed = int(time.mktime(datetime.strptime(datetime.strftime(today + timedelta(days = 1), "%Y-%m-%d"), "%Y-%m-%d").timetuple()))
 	    st = str(st) + '000'
-	    print st
+	    print(st)
 	    ed = str(ed) + '000'
-	    print ed
+	    print(ed)
 
 	    s_today = datetime.strftime(today, "%Y-%m-%d")
 	    for i in range(len(vstock)):
@@ -72,13 +72,13 @@ def start(url, d, today, vstock):
 				#print item['description'].encode('utf-8'), vstock[i]._name
 				if str(item['created_at']) > st and str(item['created_at']) < ed:
 					if item['text'].encode('utf-8').find(vstock[i]._name) != -1:
-						print 2
+						print(2)
 						ff = open('corpus/' + s_today + '_' + str(description_id) + '.txt', 'w')
 						ff.write(item['text'].encode('utf-8'))
 						ff.close()
 						description_id += 1
 						#print vstock[i]._name, item['description'].encode('utf-8')
-						if d.has_key(i):
+						if i in d:
 							d[i] = d[i] + 1
 						else:
 							d[i] = 1
@@ -98,8 +98,8 @@ def start(url, d, today, vstock):
 	   # browser.close()
 	   # browser.quit()
 	    return 1
-    except Exception , e:
-    	print e
+    except Exception as e:
+    	print(e)
 
        # browser.close()
        # browser.quit()	
@@ -111,9 +111,9 @@ def get_id():
 	url = 'http://xueqiu.com/people/all'
 	
 	headers = {"User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6"}
-	req = urllib2.Request( url, headers = headers)
+	req = urllib.request.Request( url, headers = headers)
 	try:
-		content = urllib2.urlopen(req).read()
+		content = urllib.request.urlopen(req).read()
 	except:
 		return
 	soup = BeautifulSoup(content)
@@ -127,11 +127,11 @@ def get_id():
 		if link.find('id') != -1:
 
 			url = 'http://xueqiu.com' + link
-			print url
+			print(url)
 			headers = {"User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6"}
-			req = urllib2.Request( url, headers = headers)
+			req = urllib.request.Request( url, headers = headers)
 			try:
-				content = urllib2.urlopen(req).read()
+				content = urllib.request.urlopen(req).read()
 			except:
 				return
 			soup = BeautifulSoup(content)
@@ -139,11 +139,11 @@ def get_id():
 			h = name.findAll('li')
 			for item in h:
 				p = item.findAll('input')
-				print p[0].get('value').encode('utf-8'), p[1].get('value').encode('utf-8')
-				if not people.has_key(p[0].get('value').encode('utf-8')):
+				print(p[0].get('value').encode('utf-8'), p[1].get('value').encode('utf-8'))
+				if p[0].get('value').encode('utf-8') not in people:
 					people[p[0].get('value').encode('utf-8')] = 0
 					f.write(p[0].get('value').encode('utf-8') + ' ' + p[1].get('value').encode('utf-8') + '\n')
-	print 1
+	print(1)
 class stock:
 	_id = ''
 	_name = ''
@@ -174,7 +174,7 @@ def pawner(day, t2):
 		industry_file = 'industry' + yesterday + '.txt'
 		#ff = open('score' + yesterday + '.txt', 'r')
 		d = {}
-		print score_file
+		print(score_file)
 		vstock = []
 		#ff = open('stock.txt', 'r')
 
@@ -202,8 +202,8 @@ def pawner(day, t2):
 		#	s = stock(array[0], array[1], array[2])
 		#	vstock.append(s)
 
-		print len(vstock)
-		print repr(vstock[0]._name)
+		print(len(vstock))
+		print(repr(vstock[0]._name))
 		#print chardet.detect(vstock[0]._name)
 		#print vstock[0]._name.decode('utf-8')
 		#return
@@ -224,7 +224,7 @@ def pawner(day, t2):
 					break
 				array = line[:-1].split(' ')
 				user = array[0]
-				print array[0], array[1]
+				print(array[0], array[1])
 				#user = "1676206424"
 				page = 1
 				while 1:
@@ -236,8 +236,8 @@ def pawner(day, t2):
 						break
 					page = page + 1
 				time.sleep(2)
-			except Exception , e:
-				print e
+			except Exception as e:
+				print(e)
 				continue
 			#break
 			#i = i  + 1
@@ -256,24 +256,24 @@ def pawner(day, t2):
 		ncol = rs.ncols	
 		ws.write(1, ncol, yesterday)
 		industry_d = {}
-		t = sorted(d.items(), lambda x, y: cmp(x[1], y[1]), reverse=True)
+		t = sorted(list(d.items()), lambda x, y: cmp(x[1], y[1]), reverse=True)
 		for key in t:
-			print str(vstock[key[0]]._name) + '%' + str(vstock[key[0]]._industry) + '%'+ str(key[1]) + '\n'
+			print(str(vstock[key[0]]._name) + '%' + str(vstock[key[0]]._industry) + '%'+ str(key[1]) + '\n')
 			ff.write(str(vstock[key[0]]._name) + '%' + str(vstock[key[0]]._industry) + '%'+ str(key[1]) + '\n')
 
-			if industry_d.has_key(vstock[key[0]]._industry):
+			if vstock[key[0]]._industry in industry_d:
 				industry_d[vstock[key[0]]._industry] += 1
 			else:
 				industry_d[vstock[key[0]]._industry] = 1
 
 			ws.write(key[0] + 2, ncol, key[1])
 
-		t = sorted(industry_d.items(), lambda x, y: cmp(x[1], y[1]), reverse=True)
+		t = sorted(list(industry_d.items()), lambda x, y: cmp(x[1], y[1]), reverse=True)
 		for key in t:
-			print str(key[0]) + '%' + str(key[1]) + '\n'
+			print(str(key[0]) + '%' + str(key[1]) + '\n')
 			industry_p.write(str(key[0]) + '%' + str(key[1]) + '\n')
 
-		print industry_d
+		print(industry_d)
 	    #id = 'backwasabi'
 	    #url = "http://xueqiu.com/" + id
 	    #start(url)

@@ -17,7 +17,7 @@ for i in range(len(file_names)):
 	date[fname[5:-4]] = -1
 
 	f = open(fname, 'r')
-	print fname
+	print(fname)
 	stock_t = {}
 	summ = 0
 	while 1:

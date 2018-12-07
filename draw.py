@@ -6,7 +6,7 @@ from time import *
 from glob import glob
 import matplotlib.pyplot as pl
 
-import re,urllib2
+import re,urllib.request,urllib.error,urllib.parse
 from bs4 import BeautifulSoup
 from matplotlib.ticker import MultipleLocator, FuncFormatter
 
@@ -17,7 +17,7 @@ stock = {}
 xlabel = file_names[0]
 for fname in file_names:
 	f = open(fname, 'r')
-	print fname
+	print(fname)
 	summ = 0
 	stock_t = {}
 	while 1:
@@ -37,7 +37,7 @@ for fname in file_names:
 		#print line
 		summ += int(array[2])
 	for key in stock_t:
-		if stock.has_key(key):
+		if key in stock:
 			stock[key].append(stock_t[key]/float(summ))
 		else:
 			stock[key] = [stock_t[key]/float(summ)]		
@@ -45,14 +45,14 @@ for fname in file_names:
 
 #url = 'http://quotes.money.163.com/trade/lsjysj_'+ '601800'+'.html?year=2014&season=4'
 url = 'http://quotes.money.163.com/trade/lsjysj_'+ '600030'+'.html?year=2014&season=4'
-print url
+print(url)
 #print("股票代码:" + stock_num)
 headers = {"User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6"}
-req = urllib2.Request( url, headers = headers)
+req = urllib.request.Request( url, headers = headers)
 try:
-    content = urllib2.urlopen(req).read()
-except Exception,e:
-    print e
+    content = urllib.request.urlopen(req).read()
+except Exception as e:
+    print(e)
     #return 0
 soup = BeautifulSoup(content)
 xlabel = xlabel[5:-4]
@@ -69,14 +69,14 @@ for i in range(1, len(tr)):
 
 
 url = 'http://quotes.money.163.com/trade/lsjysj_'+ '600030'+'.html'
-print url
+print(url)
 #print("股票代码:" + stock_num)
 headers = {"User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6"}
-req = urllib2.Request( url, headers = headers)
+req = urllib.request.Request( url, headers = headers)
 try:
-    content = urllib2.urlopen(req).read()
-except Exception,e:
-    print e
+    content = urllib.request.urlopen(req).read()
+except Exception as e:
+    print(e)
     #return 0
 soup = BeautifulSoup(content)
 xlabel = xlabel[5:-4]
@@ -92,27 +92,27 @@ for i in range(1, len(tr)):
 
 
 
-print web
+print(web)
 
 y2=[]
 for fname in file_names:
 	nm = fname[5:-4]
 	nm = fname[5:-4]
-	if web.has_key(nm.decode('utf-8')):
+	if nm.decode('utf-8') in web:
 		y2.append(float(web[nm.decode('utf-8')]))
 	else:
 		y2.append(0)
-print y2
+print(y2)
 fig = plt.figure()
 f = fig.add_subplot(111)
 f2 = fig.add_subplot(111)
 #ax = plt.gca()
 #ax.xaxis.set_major_locator( MultipleLocator(1) )
 #for key in stock:
-key = u'中信证券'
+key = '中信证券'
 #key = u'中国交建'
-x = range(len(stock[key]))
-print stock[key]
+x = list(range(len(stock[key])))
+print(stock[key])
 y = stock[key]
 
 yy1 = []
@@ -122,7 +122,7 @@ for i in range(len(stock[key])):
 		yy1.append(y[i])
 		yy2.append(y2[i])
 
-print yy2
+print(yy2)
 
 #normal
 minn = min(yy1)
@@ -134,13 +134,13 @@ maxx = max(yy2)
 yy2 = [ (t - minn) / (maxx - minn) for t in yy2 ]
 
 
-x = range(len(yy1))
+x = list(range(len(yy1)))
 #t =float(sum(y))
 #y = [ a / t for a in y]
 #print t
-print x, y
+print(x, y)
 plt.xlabel(xlabel)
-print xlabel
+print(xlabel)
 f.plot(x, yy1, color = 'red')
 
 f2.plot(x, yy2)

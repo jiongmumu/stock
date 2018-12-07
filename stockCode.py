@@ -1,7 +1,7 @@
 # -*- coding: utf-8-*-
 
 #抓取网易的股票信息，股票名字、代码、所属行业
-import re,urllib2
+import re,urllib.request,urllib.error,urllib.parse
 import xlwt
 from bs4 import BeautifulSoup
 
@@ -19,16 +19,16 @@ class getstock:
             stock_num = str(count).zfill(7)  
         else:
             stock_num = '1' + str(count).zfill(6)  
-        print stock_num
+        print(stock_num)
         url = 'http://quotes.money.163.com/'+stock_num+'.html'
-        print url
+        print(url)
         #print("股票代码:" + stock_num)
         headers = {"User-Agent":"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US; rv:1.9.1.6) Gecko/20091201 Firefox/3.5.6"}
-        req = urllib2.Request( url, headers = headers)
+        req = urllib.request.Request( url, headers = headers)
         try:
-            content = urllib2.urlopen(req).read()
-        except Exception,e:
-            print e
+            content = urllib.request.urlopen(req).read()
+        except Exception as e:
+            print(e)
             return 0
         soup = BeautifulSoup(content)
       #  print content
@@ -45,10 +45,10 @@ class getstock:
         #industry = c[1].find('li')
 
         #industry_name = industry.contents[0].contents[0].encode('utf-8').strip()
-        print industry_name
-        print name
+        print(industry_name)
+        print(name)
         if name != '':
-            print summ
+            print(summ)
             #print name
             #ws.write(str(str(count).zfill(6))+'%'+str(name)+ '%'+str(industry_name) +'\n')
             ws.write(summ, 0, str(count).zfill(6))
@@ -62,14 +62,14 @@ class getstock:
 #if __name__ == '__main__':
     #定义excel表格内容
 wb = xlwt.Workbook()
-ws = wb.add_sheet(u'stock')
-ws.write(1, 0, u'股票代码')
-ws.write(1, 1, u'股票名称')
-ws.write(1, 2, u'股票板块')
-ws.write(0, 3, u'统计时间')
-ws2 = wb.add_sheet(u'industry')
-ws2.write(1, 0, u'股票板块')
-ws2.write(0, 1, u'统计时间')
+ws = wb.add_sheet('stock')
+ws.write(1, 0, '股票代码')
+ws.write(1, 1, '股票名称')
+ws.write(1, 2, '股票板块')
+ws.write(0, 3, '统计时间')
+ws2 = wb.add_sheet('industry')
+ws2.write(1, 0, '股票板块')
+ws2.write(0, 1, '统计时间')
 
 
 #ws = open('stock.txt', 'w')
@@ -92,15 +92,15 @@ while count <=2735:
             
             summ += 1
             wb.save('stock.xls')
-            print 'success'
-        print count
+            print('success')
+        print(count)
         #wb.save('stockdebt.xls')
         count1 += 1
         count += 1
 
-    except Exception,e:
-        print e
-        print 'fail'
+    except Exception as e:
+        print(e)
+        print('fail')
         count1 += 1
         count += 1
         
@@ -114,14 +114,14 @@ while count <=300409:
             
             summ += 1
             wb.save('stock.xls')
-            print 'success'
-        print count
+            print('success')
+        print(count)
         #wb.save('stockdebt.xls')
         count1 += 1
         count += 1
-    except Exception,e:
-        print e
-        print 'fail'
+    except Exception as e:
+        print(e)
+        print('fail')
         count1 += 1
         count += 1
         
@@ -135,14 +135,14 @@ while count <=603998:
 
             summ += 1
             wb.save('stock.xls')
-            print 'success'
-        print count
+            print('success')
+        print(count)
         #wb.save('stockdebt.xls')
         count1 += 1
         count += 1
-    except Exception,e:
-        print e
-        print 'fail'
+    except Exception as e:
+        print(e)
+        print('fail')
         count1 += 1
         count += 1
         
