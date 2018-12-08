@@ -4,3 +4,4 @@ corpus/
 pos/
 neg/
 *.png
+chromedriver
