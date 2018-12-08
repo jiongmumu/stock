@@ -1,4 +1,16 @@
 stock
+
+### 抓取收藏的文章
+Rocky用于抓取雪球收藏的文章，但是目前没有收藏文章= =
+
+### 抓取评论
+比如：
+https://xueqiu.com/statuses/search.json?count=10&comment=0&symbol=MOMO
+
+可以获取momo的评论
+
+不过我看着这些评论都不知道怎么样，何况怎么自动训练？？
+
 =====
 
 ###思路
