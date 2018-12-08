@@ -73,15 +73,15 @@ def start(url, d, today, vstock):
                 if item['mark'] == 1:
                     continue
                 #print item['created_at'], st, ed
-                #print item['description'].encode('utf-8'), vstock[i]._name
+                #print item['description'], vstock[i]._name
                 if str(item['created_at']) > st and str(item['created_at']) < ed:
-                    if item['text'].encode('utf-8').find(vstock[i]._name) != -1:
+                    if item['text'].find(vstock[i]._name) != -1:
                         print(2)
                         ff = open('corpus/' + s_today + '_' + str(description_id) + '.txt', 'w')
-                        ff.write(item['text'].encode('utf-8'))
+                        ff.write(item['text'])
                         ff.close()
                         description_id += 1
-                        #print vstock[i]._name, item['description'].encode('utf-8')
+                        #print vstock[i]._name, item['description']
                         if i in d:
                             d[i] = d[i] + 1
                         else:
@@ -97,7 +97,7 @@ def start(url, d, today, vstock):
             
 
 
-       # print decode[0]['description'].encode('utf-8')
+       # print decode[0]['description']
            
        # browser.close()
        # browser.quit()
@@ -121,7 +121,7 @@ def get_id():
         #browser.get(url)
         #t = browser.page_source
         print(url)
-    #    print t.encode('utf-8')
+    #    print t
 
         cookie = '''s=10ht15dh2y; xq_a_token=5e47e2777e3b08d99725fe0f9f78815eb1cb8374; xqat=5e47e2777e3b08d99725fe0f9f78815eb1cb8374; xq_r_token=c38fedb2680c6b923eb4c87f16ebf19f574c3eca; xq_is_login=1; u=6585534947; xq_token_expire=Sun%20Nov%2015%202015%2009%3A14%3A02%20GMT%2B0800%20(CST); bid=73fe343eeb79fd513ae47464f938acf9_ig040t46; snbim_minify=true; __utmt=1; __utma=1.2082135748.1445390046.1445497172.1445504051.8; __utmb=1.14.10.1445504051; __utmc=1; __utmz=1.1445390046.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); Hm_lvt_1db88642e346389874251b5a1eded6e3=1445390044; Hm_lpvt_1db88642e346389874251b5a1eded6e3=1445506132'''
 
@@ -141,10 +141,10 @@ def get_id():
         if industries:
             for industry in industries:
                 for user in industry['users']:
-                    print(user['id'], user['screen_name'].encode('utf-8'))
-                    f.write((str(user['id'])) + ' ' + (user['screen_name']).encode('utf-8') + '\n')
+                    print(user['id'], user['screen_name'])
+                    f.write((str(user['id'])) + ' ' + (user['screen_name']) + '\n')
 
-        #f.write(p[0].get('value').encode('utf-8') + ' ' + p[1].get('value').encode('utf-8') + '\n')
+        #f.write(p[0].get('value') + ' ' + p[1].get('value') + '\n')
 
 
     print(1)
@@ -190,7 +190,7 @@ def pawner(day, t2):
         for rownum in range(sh.nrows):
             if rownum < 2:
                 continue
-            s = stock(str(sh.cell(rownum, 0).value), sh.cell(rownum, 1).value.encode('utf-8'), sh.cell(rownum, 2).value.encode('utf-8'))
+            s = stock(str(sh.cell(rownum, 0).value), sh.cell(rownum, 1).value, sh.cell(rownum, 2).value)
             vstock.append(s)
     
 
@@ -204,9 +204,9 @@ def pawner(day, t2):
                 if not line:
                     break
                 array = line[:-1].split(' ')
-                user = array[0]
+                #user = array[0]
                 print(array[0], array[1])
-                #user = "1676206424"
+                user = "1676206424"
                 page = 1
                 while 1:
 
@@ -231,7 +231,7 @@ def pawner(day, t2):
 
         industry_p = open(industry_file, 'w')
         rb = open_workbook('stock.xls')
-        rs = rb.sheet_by_name('stock')
+        rs = rb.sheet_by_index(0)
         wb = copy(rb)
         ws = wb.get_sheet(0)
         ncol = rs.ncols    
