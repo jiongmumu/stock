@@ -39,9 +39,9 @@ class Downloader():
                    'Pragma': 'no-cache', 'Cache-Control': 'no-cache', 'Referer': 'https://xueqiu.com/P/ZH010389'}
         # url='https://xueqiu.com/cubes/rebalancing/history.json?cube_symbol=ZH010389&count=20&page={}'.format(page)
         r = requests.get(url=url, headers=headers)
-        print r.status_code
+        print(r.status_code)
         if r.status_code != 200:
-            print 'failed to get web content'
+            print('failed to get web content')
             return None
         else:
             return r.text

@@ -22,7 +22,7 @@ def get_proxy(retry=10):
         except Exception as e:
             print(e)
             count += 1
-            print('代理获取失败,重试' + str(count))
+            print(('代理获取失败,重试' + str(count)))
             time.sleep(1)
 
         else:
@@ -67,8 +67,8 @@ def get_content(url):
 def parse_content(post_id):
     url = 'https://xueqiu.com/statuses/reward/list_by_user.json?status_id={}&page=1&size=99999999'.format(post_id)
     r = get_content(url)
-    print('post id {}'.format(post_id))
-    print(r.text)
+    print(('post id {}'.format(post_id)))
+    print((r.text))
     if r.status_code != 200:
         print('status code != 200')
         failed_doc.insert({'post_id':post_id,'status':0})
@@ -106,7 +106,7 @@ def parse_content(post_id):
         ret.append(d)
 
     # print(ret)
-    print('len of ret {}'.format(len(ret)))
+    print(('len of ret {}'.format(len(ret))))
     if ret:
         doc.insert_many(ret)
         failed_doc.insert({'post_id':post_id,'status':1})

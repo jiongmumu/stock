@@ -10,13 +10,13 @@ def check_strategy():
         url=base_url+str(i)
         resp=requests.get(url,headers=header)
         if resp.status_code==200:
-            print '%d has strategy' %i
+            print('%d has strategy' %i)
             content=resp.text
             tree=etree.HTML(content)
             all_contnet=tree.xpath('//div[@class="detail-bd"]')
-            print tree.xpath('//title/text()')[0]
+            print(tree.xpath('//title/text()')[0])
             for i in all_contnet:
-                print i.xpath('string(.)')
+                print(i.xpath('string(.)'))
 
         time.sleep(10)
 
