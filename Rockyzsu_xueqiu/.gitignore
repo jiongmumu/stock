@@ -1,0 +1,8 @@
+*.pyc
+.DS_Store
+/data
+data.cfg
+/.idea
+*.txt
+cookies
+config.py
