@@ -5,3 +5,5 @@ pos/
 neg/
 *.png
 chromedriver
+*.html
+*.csv
